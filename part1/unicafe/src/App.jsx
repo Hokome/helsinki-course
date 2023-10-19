@@ -5,7 +5,7 @@ const FeedbackButton = ({ text, handler }) => {
 }
 
 const FeedbackStat = ({ label, value }) => {
-  return <p>{label.concat(': ', value)}</p>
+  return <tr><td>{label}</td><td>{value}</td></tr>
 }
 const Handler = (value, setter) => {
   return () => setter(value + 1);
@@ -28,12 +28,16 @@ const Statistics = ({ good, neutral, bad }) => {
   return (
     <div>
       <h1>Statistics 📊</h1>
-      <FeedbackStat label="Good" value={good}></FeedbackStat>
-      <FeedbackStat label="Neutral" value={neutral}></FeedbackStat>
-      <FeedbackStat label="Bad" value={bad}></FeedbackStat>
-      <FeedbackStat label="All" value={all}></FeedbackStat>
-      <FeedbackStat label="Average" value={average}></FeedbackStat>
-      <FeedbackStat label="Positive" value={positiveText}></FeedbackStat>
+      <table>
+        <tbody>
+          <FeedbackStat label="Good" value={good}></FeedbackStat>
+          <FeedbackStat label="Neutral" value={neutral}></FeedbackStat>
+          <FeedbackStat label="Bad" value={bad}></FeedbackStat>
+          <FeedbackStat label="All" value={all}></FeedbackStat>
+          <FeedbackStat label="Average" value={average}></FeedbackStat>
+          <FeedbackStat label="Positive" value={positiveText}></FeedbackStat>
+        </tbody>
+      </table>
     </div>
   )
 }
