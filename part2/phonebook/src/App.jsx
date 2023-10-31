@@ -33,7 +33,8 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
+      <h2>Add new person</h2>
       <PersonsForm submit={addPerson} newName={newName} newNumber={newNumber} setNewName={setNewName} setNewNumber={setNewNumber}></PersonsForm>
       <h2>Numbers</h2>
       <Filter filter={filter} setFilter={setFilter}></Filter>
