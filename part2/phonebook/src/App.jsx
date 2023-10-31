@@ -1,42 +1,40 @@
 import { useState } from 'react'
+import PersonsForm from './form'
+import Persons from './numbers';
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', id: 0 }
+    { name: 'Arto Hellas', number: '040-123456', id: 1 },
+    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
   ])
-  const [newName, setNewName] = useState('')
 
-  const addName = event => {
-    event.preventDefault()
+  const [newName, setNewName] = useState('');
+  const [newNumber, setNewNumber] = useState('');
+
+  const addPerson = () => {
     let id = 0;
     for (let i = 0; i < persons.length; i++) {
       persons[i].id <= id;
       id = persons[i].id + 1;
     }
-    let nameObj = { name: newName, id: id }
-    if (persons.some(v => v.name == nameObj.name)) {
+    let nameObj = { name: newName, number: newNumber, id: id }
+    if (persons.some(v => v.name === nameObj.name)) {
       alert(`${nameObj.name} is already in the phonebook.`);
       return;
     }
     setPersons(persons.concat(nameObj))
     setNewName('')
+    setNewNumber('')
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addName}>
-        <div>
-          name: <input value={newName} onChange={event => setNewName(event.target.value)} />
-        </div>
-        <div>
-          <button type="submit" >add</button>
-        </div>
-      </form>
+      <PersonsForm submit={addPerson} newName={newName} newNumber={newNumber} setNewName={setNewName} setNewNumber={setNewNumber}></PersonsForm>
       <h2>Numbers</h2>
-      <ul>
-        {persons.map(v => (<li key={v.id}>{v.name}</li>))}
-      </ul>
+      <Persons persons={persons}></Persons>
     </div>
   )
 }
