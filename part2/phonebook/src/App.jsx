@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import PersonsForm from './form'
-import Persons from './numbers';
+import PersonsForm from './components/form'
+import Persons from './components/numbers';
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -10,6 +10,7 @@ const App = () => {
     { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
   ])
 
+  const [filter, setFilter] = useState('');
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
 
