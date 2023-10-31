@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import PersonsForm from './components/form'
 import Persons from './components/numbers';
+import Filter from './components/filter';
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -35,7 +36,8 @@ const App = () => {
       <h2>Phonebook</h2>
       <PersonsForm submit={addPerson} newName={newName} newNumber={newNumber} setNewName={setNewName} setNewNumber={setNewNumber}></PersonsForm>
       <h2>Numbers</h2>
-      <Persons persons={persons}></Persons>
+      <Filter filter={filter} setFilter={setFilter}></Filter>
+      <Persons persons={persons} filter={filter}></Persons>
     </div>
   )
 }
