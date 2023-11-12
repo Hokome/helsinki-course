@@ -24,7 +24,7 @@ const App = () => {
   if (personToDelete != null) {
 
     let personsCopy = [...persons]
-    personsCopy.splice(personsCopy.indexOf(personToDelete));
+    personsCopy.splice(personsCopy.indexOf(personToDelete), 1);
     setPersons(personsCopy);
 
     personsService.deletePerson(personToDelete.id).then(data => {
@@ -33,24 +33,25 @@ const App = () => {
   }
 
   const addPerson = () => {
-    let id = 0;
-    for (let i = 0; i < persons.length; i++) {
-      persons[i].id <= id;
-      id = persons[i].id + 1;
-    }
-    let personObj = { name: newName, number: newNumber }
-    if (persons.some(v => v.name === personObj.name)) {
-      alert(`${personObj.name} is already in the phonebook.`);
+
+    let newPerson = { name: newName, number: newNumber }
+    if (persons.some(person => person.name === newPerson.name)) {
+      if (window.confirm(`${newPerson.name} is already in the phonebook. Do you wish to replace the number?`)) {
+        newPerson.id = persons.find(person => person.name === newPerson.name).id;
+
+        personsService.updatePerson(newPerson).then(changedPerson => {
+          setPersons(persons.map(person => person.id !== changedPerson.id ? person : changedPerson));
+        }).catch(error => alert(error));
+      }
       return;
     }
 
-    personsService.addPerson(personObj)
+    personsService.addPerson(newPerson)
       .then(newPerson => {
         setPersons(persons.concat(newPerson));
         setNewName('')
         setNewNumber('')
       });
-
   }
 
   return (
