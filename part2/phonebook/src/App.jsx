@@ -25,14 +25,19 @@ const App = () => {
       persons[i].id <= id;
       id = persons[i].id + 1;
     }
-    let nameObj = { name: newName, number: newNumber, id: id }
-    if (persons.some(v => v.name === nameObj.name)) {
-      alert(`${nameObj.name} is already in the phonebook.`);
+    let personObj = { name: newName, number: newNumber }
+    if (persons.some(v => v.name === personObj.name)) {
+      alert(`${personObj.name} is already in the phonebook.`);
       return;
     }
-    setPersons(persons.concat(nameObj))
-    setNewName('')
-    setNewNumber('')
+
+    personsService.addPerson(personObj)
+      .then(newPerson => {
+        setPersons(persons.concat(newPerson));
+        setNewName('')
+        setNewNumber('')
+      });
+
   }
 
   return (

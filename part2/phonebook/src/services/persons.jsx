@@ -7,6 +7,12 @@ const getAll = () => {
   return request.then(response => response.data);
 }
 
+const addPerson = person => {
+  const request = axios.post(baseUrl, person);
+  return request.then(response => response.data);
+}
+
 export default {
-  getAll
+  getAll,
+  addPerson,
 }
