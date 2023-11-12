@@ -11,6 +11,7 @@ const App = () => {
   const [filter, setFilter] = useState('');
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
+  const [toDelete, setDelete] = useState(-1);
 
 
   useEffect(() => {
@@ -18,6 +19,18 @@ const App = () => {
       return;
     personsService.getAll().then(persons => setPersons(persons));
   });
+
+  const personToDelete = persons.find(p => p.id === toDelete);
+  if (personToDelete != null) {
+
+    let personsCopy = [...persons]
+    personsCopy.splice(personsCopy.indexOf(personToDelete));
+    setPersons(personsCopy);
+
+    personsService.deletePerson(personToDelete.id).then(data => {
+      console.log(data);
+    });
+  }
 
   const addPerson = () => {
     let id = 0;
@@ -47,7 +60,7 @@ const App = () => {
       <PersonsForm submit={addPerson} newName={newName} newNumber={newNumber} setNewName={setNewName} setNewNumber={setNewNumber}></PersonsForm>
       <h2>Numbers</h2>
       <Filter filter={filter} setFilter={setFilter}></Filter>
-      <Persons persons={persons} filter={filter}></Persons>
+      <Persons persons={persons} filter={filter} setDelete={setDelete}></Persons>
     </div>
   )
 }

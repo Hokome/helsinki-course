@@ -1,13 +1,19 @@
-function testFilter(person, filter) {
+const testFilter = (person, filter, setDelete) => {
+
+  const promptDelete = () => {
+    if (window.confirm(`Delete ${person.name} from the phonebook?`)) {
+      setDelete(person.id);
+    }
+  }
   if (person.name.includes(filter)) return (
-    <li key={person.id}>{person.name}: {person.number}</li>
+    <li key={person.id}>{person.name}: {person.number} <button onClick={promptDelete}>Delete</button></li>
   )
 }
 
-const Persons = ({ persons, filter }) => {
+const Persons = ({ persons, filter, setDelete }) => {
   return (
     <ul>
-      {persons.map(v => testFilter(v, filter))}
+      {persons.map(person => testFilter(person, filter, setDelete))}
     </ul>
   )
 }
