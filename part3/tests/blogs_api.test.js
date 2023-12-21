@@ -22,6 +22,14 @@ describe('api', () => {
     const response = await api.get('/api/blogs').expect(200);
     expect(response.body[0].id).toBeDefined();
   });
+  test('blogs get added to the database properly', async () => {
+    const originalList = await api.get('/api/blogs');
+    const response = await api.post('/api/blogs', helper.testData).expect(201);
+    const blogList = await api.get('/api/blogs');
+
+    expect(blogList.body.length).toBe(originalList.body.length + 1);
+    expect(blogList.body).toContainEqual(response.body);
+  });
 });
 
 afterAll(async () => {
