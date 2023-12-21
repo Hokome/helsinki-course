@@ -24,21 +24,30 @@ describe('api', () => {
   });
   test('blogs get added to the database properly', async () => {
     const originalList = await api.get('/api/blogs');
-    const response = await api.post('/api/blogs', helper.testData).expect(201);
+    const response = await api.post('/api/blogs').send(helper.testData).expect(201);
     const blogList = await api.get('/api/blogs');
 
     expect(blogList.body.length).toBe(originalList.body.length + 1);
     expect(blogList.body).toContainEqual(response.body);
   });
   test('likes is equal to zero if missing from post request', async () => {
-    const testBlog = helper.testData;
+    const testBlog = { ...helper.testData };
     delete testBlog.likes;
 
-    const response = await api.post('/api/blogs', ).expect(201);
+    const response = await api.post('/api/blogs').send(testBlog).expect(201);
     const blog = await api.get(`/api/blogs/${response.body.id}`).expect(200);
 
     expect(blog.body.likes).toBeDefined();
     expect(blog.body.likes).toBe(0);
+  });
+  test('responds with error if url or title missing from blog', async () => {
+    const testBlog = { ...helper.testData };
+    delete testBlog.title;
+    await api.post('/api/blogs').send(testBlog).expect(400);
+
+    const testBlog2 = { ...helper.testData };
+    delete testBlog2.url;
+    await api.post('/api/blogs').send(testBlog2).expect(400);
   });
 });
 

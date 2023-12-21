@@ -18,10 +18,16 @@ blogsRouter.get('/:id', async (request, response) => {
 });
 
 blogsRouter.post('/', (request, response) => {
-  const blog = new Blog(request.body);
+  const body = request.body;
 
-  if (blog.likes == null)
-    blog.likes = 0;
+  if (body.likes == null)
+    body.likes = 0;
+  if (body.title == null || body.url == null) {
+    response.status(400).end();
+    return;
+  }
+
+  const blog = new Blog(body);
 
   blog.save().then((result) => {
     response.status(201).json(result);
