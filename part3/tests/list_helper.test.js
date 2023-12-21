@@ -86,7 +86,7 @@ describe('total likes', () => {
   });
 });
 
-describe.only('favorite blog', () => {
+describe('favorite blog', () => {
   test('empty list is null', () => {
     const blogs = [];
 
