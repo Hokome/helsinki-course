@@ -22,6 +22,13 @@ describe('get api', () => {
     const response = await api.get('/api/blogs').expect(200);
     expect(response.body[0].id).toBeDefined();
   });
+  test('getting one blog works properly', async () => {
+    
+    const response = await api.get('/api/blogs').expect(200);
+    const individualResponse = await api.get(`/api/blogs/${response.body[0].id}`).expect(200);
+
+    expect(individualResponse.body).toEqual(response.body[0]);
+  });
 });
 
 describe('post api', () => {
@@ -62,6 +69,20 @@ describe('delete api', () => {
 
     await api.delete(`/api/blogs/${response.body.id}`).expect(204);
     await api.get(`/api/blogs/${response.body.id}`).expect(404);
+  });
+});
+
+describe('put api', () => {
+  test('blog likes get updated properly', async () => {
+    let testBlog = { ...helper.testData };
+
+    const response = await api.post('/api/blogs').send(testBlog).expect(201);
+
+    testBlog.likes++;
+    await api.put(`/api/blogs/${response.body.id}`).send(testBlog).expect(204);
+    const updatedBlog = await api.get(`/api/blogs/${response.body.id}`).expect(200);
+
+    expect(updatedBlog.body.likes).toBe(helper.testData.likes + 1);
   });
 });
 

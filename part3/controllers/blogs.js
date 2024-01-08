@@ -10,6 +10,7 @@ blogsRouter.get('/', (request, response) => {
 });
 blogsRouter.get('/:id', async (request, response) => {
   const blog = await Blog.findById(request.params.id);
+
   if (blog) {
     response.json(blog);
   } else {
@@ -39,6 +40,17 @@ blogsRouter.delete('/:id', async (req, res) => {
   await Blog.findByIdAndDelete(id);
   
   res.status(204).end();
+});
+
+blogsRouter.put('/:id', (req, res) => {
+  const id = req.params.id;
+  const body = req.body;
+
+  Blog.findByIdAndUpdate(id, body, { returnDocument: 'after' })
+    .then(() => {
+      res.status(204).end();
+    })
+    .catch(error => next(error));
 });
 
 module.exports = blogsRouter;
