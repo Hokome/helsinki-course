@@ -11,7 +11,7 @@ beforeEach(async () => {
   await Blog.insertMany(helper.initialData);
 });
 
-describe('api', () => {
+describe('get api', () => {
   test('blogs are returned as json', async () => {
     await api
       .get('/api/blogs')
@@ -22,6 +22,9 @@ describe('api', () => {
     const response = await api.get('/api/blogs').expect(200);
     expect(response.body[0].id).toBeDefined();
   });
+});
+
+describe('post api', () => {
   test('blogs get added to the database properly', async () => {
     const originalList = await api.get('/api/blogs');
     const response = await api.post('/api/blogs').send(helper.testData).expect(201);
@@ -48,6 +51,17 @@ describe('api', () => {
     const testBlog2 = { ...helper.testData };
     delete testBlog2.url;
     await api.post('/api/blogs').send(testBlog2).expect(400);
+  });
+});
+
+describe('delete api', () => {
+  test('blog gets deleted from database properly', async () => {
+    const testBlog = { ...helper.testData };
+
+    const response = await api.post('/api/blogs').send(testBlog).expect(201);
+
+    await api.delete(`/api/blogs/${response.body.id}`).expect(204);
+    await api.get(`/api/blogs/${response.body.id}`).expect(404);
   });
 });
 
